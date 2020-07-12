@@ -8,8 +8,8 @@ const server = express()
 
 //setting up routers/endpoints
 const projectsRouter = require('./projects/projectRouter')
-// const taskRouter = require('./tasks/taskRouter')
-// const tagRouter = require('./tags/tagRouter')
+const taskRouter = require('./tasks/taskRouter')
+const tagRouter = require('./tags/tagRouter')
 
 
 //middlewear
@@ -19,8 +19,8 @@ server.use(express.json())
 
 //set endpoint for routers
 server.use('/api/projects', projectsRouter)
-// server.use('/api/tags', tagRouter)
-// server.use('/api/tasks', taskRouter)
+server.use('/api/tags', tagRouter)
+server.use('/api/tasks', taskRouter)
 
 
 server.get('/', (req,res) => {
