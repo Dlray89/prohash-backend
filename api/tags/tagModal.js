@@ -10,31 +10,31 @@ module.exports = {
 }
 
 function find(){
-return DB("tags")
+return tagdb("tags")
 }
 
 function findById(id){
-    return db('tags')
+    return tagdb('tags')
         .where({id})
         .first();
 
 }
 
 function add(tag){
-return DB("tags")
+return tagdb("tags")
 .insert(tag, 'id')
 .then(ids => ({ id: ids[0]}))
 }
 
 function update(id, changes){
-    return DB('tags')
+    return tagdb('tags')
     .where('id', id)
     .update(changes)
     .then(count => (count > 0 ? findById(id) : null ))
 }
 
 function remove(id){
-    return DB('tags')
+    return tagdb('tags')
     .where('id', id)
     .del()
 }
