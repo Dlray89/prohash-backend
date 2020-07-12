@@ -11,31 +11,31 @@ module.exports = {
 }
 
 function find(){
-return DB("tasks")
+return taskdb("tasks")
 }
 
-function findById(id){
-    return db('tasks')
+function fintaskdbyId(id){
+    return taskdb('tasks')
         .where({id})
         .first();
 
 }
 
 function add(task){
-return DB("tasks")
+return taskdb("tasks")
 .insert(task, 'id')
 .then(ids => ({ id: ids[0]}))
 }
 
 function update(id, changes){
-    return DB('tasks')
+    return taskdb('tasks')
     .where('id', id)
     .update(changes, '*')
     
 }
 
 function remove(id){
-    return DB('tasks')
+    return taskdb('tasks')
     .where('id', id)
     .del()
 }
