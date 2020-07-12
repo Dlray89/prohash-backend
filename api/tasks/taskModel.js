@@ -14,7 +14,7 @@ function find(){
 return taskdb("tasks")
 }
 
-function fintaskdbyId(id){
+function findById(id){
     return taskdb('tasks')
         .where({id})
         .first();
