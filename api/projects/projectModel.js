@@ -4,6 +4,8 @@ module.exports = {
     find
 }
 
+
+//find all project with find
 function find(){
     return db('projects')
 }
