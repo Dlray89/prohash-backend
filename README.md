@@ -38,9 +38,8 @@ Alternatively see the GitHub documentation on creating a pull request.
 Contributors
 Thanks to the following people who have contributed to this project:
 
-@scottydocs 📖
-@cainwatson 🐛
-@calchuchesta 🐛
+@Dlray89 📖
+
 You might want to consider using something like the All Contributors specification and its emoji key.
 
 Contact
