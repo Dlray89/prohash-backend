@@ -1,7 +1,7 @@
 const Router = require('express').Router()
 const bcrpyt = require('bcryptjs')
 const JWT = require('jsonwebtoken')
-const AuhtData = require('../api/users/userModel')
+const AuhtData = require('../api/users/usermodel')
 
 Router.post('/register', (req, res) => {
 
