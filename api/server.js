@@ -20,6 +20,7 @@ const authRouter = require('../auth/auth-router')
 //middlewear
 server.use(helmet())
 server.use(morgan('dev'))
+server.use(cors())
 server.use(express.json())
 
 //set endpoint for routers
