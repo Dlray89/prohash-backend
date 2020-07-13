@@ -6,13 +6,21 @@ exports.up = function(knex, Promise) {
 
         tasks.string('name', 128).notNullable()
 
+        tasks.integer('project_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('projects')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+
        
 
         tasks.timestamp('Created at:').defaultTo(knex.fn.now())
 
         tasks.timestamp('updated at:').defaultTo(knex.fn.now())
 
-        // tasks.foreign('project_id')
+        tasks.foreign('project_id')
 
         
     })

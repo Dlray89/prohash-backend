@@ -5,7 +5,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/prohash.db'
+      filename: './data/prohashdb.db'
     },
     useNullAsDefault: true,
     migrations: {
