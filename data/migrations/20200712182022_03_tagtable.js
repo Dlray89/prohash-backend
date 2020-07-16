@@ -6,7 +6,6 @@ exports.up = function(knex) {
 
       tags.integer('project_id')
       .unsigned()
-      .notNullable()
       .references('id')
       .inTable('projects')
       .onDelete('CASCADE')
