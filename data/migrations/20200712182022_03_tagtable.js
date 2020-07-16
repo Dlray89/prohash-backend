@@ -2,7 +2,7 @@ exports.up = function(knex) {
   return knex.schema.createTable('tags', function(tags) {
       tags.increments().unique()
 
-      tags.string('name', 128).notNullable().unique()
+      tags.string('tagname', 128).notNullable().unique()
 
       tags.integer('project_id')
       .unsigned()

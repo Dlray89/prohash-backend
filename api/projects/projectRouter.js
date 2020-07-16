@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('./projectModel')
+const db = require('./projectModel.js')
 const router = express.Router()
 
 router.get('/', (req,res) => {
@@ -25,6 +25,9 @@ router.get('/:id', (req,res) => {
         res.status(500).json({ errorMessage: `${error}: Could not find project`})
     })
 
+})
+    
+
 router.post('/', (req,res) => {
     const newproject = req.body
         db
@@ -33,10 +36,10 @@ router.post('/', (req,res) => {
             res.status(201).json(newproject)
         })
         .catch(error => {
-            res.status
+            res.status(500).json({errorMessage: `${error}: We could not add your project`})
         })
     })
-})
+
 
 router.put('/:id', (req, res)=> {
     const { id } = req.params
