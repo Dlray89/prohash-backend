@@ -13,9 +13,9 @@ projects.increments().unique()
 
 
 
-      projects.timestamp('created at').defaultTo(knex.fn.now())
+      projects.timestamp('createdAt').defaultTo(knex.fn.now())
 
-      projects.timestamp('updated at').defaultTo(knex.fn.now())
+      projects.timestamp('updatedAt').defaultTo(knex.fn.now())
   })
 };
 
