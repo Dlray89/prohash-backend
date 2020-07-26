@@ -1,19 +1,26 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('users', users => {
+  return knex.schema.createTable('roles', tbl => {
 
+    tbl.increments();
 
-    users.increments()
+    tbl.string('name', 128).notNullable().unique()
+  })
 
-    users.string('username', 128)
-    .notNullable()
-    .unique()
+  .createTable('users', tbl => {
 
+    tbl.increments()
 
-    users
-    .string('password')
+    tbl.string("username", 128).notNullable().unique().index()
+    tbl.string("password", 256).notNullable()
+
+    tbl.integer('role')
+    .unsigned()
+    .references('roles.id')
+    .onDelete("RESTRICT")
+    .onUpdate("CASCADE")
   })
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('users')
+  return knex.schema.dropTableIfExists('users').dropTableIfExists('users')
 };

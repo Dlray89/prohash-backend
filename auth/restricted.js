@@ -1,23 +1,20 @@
 const jwt = require('jsonwebtoken')
 
-
 module.exports = (req, res, next) => {
-    //destructing auth from the header
-    const { authorization } = req.header;
+    const token = req.headers.authorization
+    const secret = process.env.JWT_SECRET || 'this is a secret'
 
-    const secret = process.env.JWT_SECRET || "good"
-
-    if(authorization) {
-        jwt.verify(authorization, secret, (err, decodedToken) => {
-            if (err) {
-                res.status(401).json({message:` Can't validate credentials`})
+    if (token) {
+        jwt.verify(token, secret, (err, decodedToken) => {
+            if(err) {
+                res.status(401).json({you: 'cant touch this'})
             } else {
-                req.decodedToken = decodedToken
-
-
+                req.jwt = decodedToken
                 next()
-            }})
+            }
+        })
+        
     } else {
-        res.status(400).json({ message: 'Wrong credentials'})
+        res.status(401).json({you: 'you shall not pass'})
     }
 }

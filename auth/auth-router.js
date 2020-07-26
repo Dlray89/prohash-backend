@@ -1,63 +1,68 @@
-const Router = require('express').Router()
-const bcrpyt = require('bcryptjs')
+const bcryptjs = require('bcryptjs')
 const JWT = require('jsonwebtoken')
-const AuhtData = require('../api/users/usermodel')
+const router = require('express').Router()
 
-Router.post('/register', (req, res) => {
+const Users = require('../api/users/usermodel')
+const { isValid } = require('../api/users/user_service')
 
-    const userInfo = req.body
+router.post('/register', (req,res) => {
+    const credentials = req.body
 
+    if (isValid(credentials)) {
+        const rounds = process.env.BCRYPY_ROUNDS || 8
 
-    //hashing password
-    const ROUNDS = process.env.HASHING_ROUND || 8
-    const hashing = bcrpyt.hashSync(userInfo.password, ROUNDS)
+        const hash = bcryptjs.hashSync(credentials.password, rounds)
 
-    userInfo.password = hashing
+        credentials.password = hash
 
-    AuhtData
-    .add(userInfo)
-    .then(user => {
-        res.status(201).json(user)
-    })
-    .catch(err => {
-        res.status(500).json({ errorMessage: `${err}: Something went wrong with your registeration! Please try again!`})
-    })
+        Users.add(credentials)
+        .then(users => {
+            res.status(201).json({ data: users})
+        })
+        .catch(err => {
+            res.status(500).json({message: err.message })
+        })
+    } else {
+        res.status(400).json({
+            message: 'please provide username and password. password must be alphanumeric'
+        })
+    }
 })
 
+router.post('/login', (req,res) => {
+    const{username, password} = req.body
 
-//set up login here
-Router.post('/login', (req, res) => {
-
-    const { username, password} = req.body
-    AuhtData
-    .findBy({ username })
-    .first()
-    .then(user => {
-            if (user && bcrpyt.hashSync(password, user.password)) {
-                const TOKEN = generatedToken(user)
-
-                res.status(200).json(TOKEN)
+    if (isValid(req.body)) {
+        Users.findBy({username: username})
+        .then(([users]) => {
+            if (users && bcryptjs.compareSync(password, users.password)) {
+                const token = makeJWT(users)
+                res.status(200).json({
+                    message: "welcome users",
+                    token})
             } else {
-                res.status(401).json({ errorMessage: 'You enter invail credentails'})
+                res.status(401).json({message: "invaild credentials"})
             }
-    })
-    .catch(err => {
-        res.status(500).json({ errorMessage:` ${err}: Something went wrong when your login credentials! Try again`})
-    })
+        })
+        .catch(err => {
+            res.status(500).json({message: err.message})
+        })
+    } else {
+        res.status(400).json({message: 'please provide username and password'})
+    }
 })
 
-function generatedToken(user) {
+
+function makeJWT(users) {
     const payload = {
-        username: user.username
+        subject: users.id,
+        username: users.username,
+        role: users.role
     }
-
-    const secret = process.env.JWT_SECRET || 'Information is safe and secure'
+    const secret = process.env.JWT_SECRET || 'this is a secret'
     const options = {
-        expiresIn:'1h'
+        expiresIn: '2h'
     }
-
     return JWT.sign(payload, secret, options)
 }
-
-
-module.exports = Router
+module.exports = router
