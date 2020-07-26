@@ -9,7 +9,7 @@ Router.use(restricited)
 Router.get('/', (req,res) => {
     userDB.find()
     .then(user => {
-        res.status(200).json(user)
+        res.status(200).json({data: user, jwt: req.jwt})
     })
     .catch(err => res.send(err))
 })

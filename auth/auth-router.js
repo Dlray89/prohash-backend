@@ -16,8 +16,8 @@ router.post('/register', (req,res) => {
         credentials.password = hash
 
         Users.add(credentials)
-        .then(users => {
-            res.status(201).json({ data: users})
+        .then(user => {
+            res.status(201).json({ data: user})
         })
         .catch(err => {
             res.status(500).json({message: err.message })
@@ -33,12 +33,12 @@ router.post('/login', (req,res) => {
     const{username, password} = req.body
 
     if (isValid(req.body)) {
-        Users.findBy({username: username})
-        .then(([users]) => {
-            if (users && bcryptjs.compareSync(password, users.password)) {
-                const token = makeJWT(users)
+        User.findBy({username: username})
+        .then(([user]) => {
+            if (user && bcryptjs.compareSync(password, user.password)) {
+                const token = makeJWT(user)
                 res.status(200).json({
-                    message: "welcome users",
+                    message: "welcome user",
                     token})
             } else {
                 res.status(401).json({message: "invaild credentials"})
@@ -53,11 +53,11 @@ router.post('/login', (req,res) => {
 })
 
 
-function makeJWT(users) {
+function makeJWT(user) {
     const payload = {
-        subject: users.id,
-        username: users.username,
-        role: users.role
+        subject: user.id,
+        username: user.username,
+        role: user.role
     }
     const secret = process.env.JWT_SECRET || 'this is a secret'
     const options = {
