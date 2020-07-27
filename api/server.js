@@ -8,7 +8,7 @@ const session = require("express-session")
 const server = express()
 
 
-const restricted = require('../auth/restricted')
+// const restricted = require('../auth/restricted')
 
 //setting up routers/endpoints
 const projectsRouter = require('./projects/projectRouter')
@@ -37,9 +37,9 @@ server.use(express.json())
 server.use(session(sessionCOnfig))
 
 //set endpoint for routers
-server.use('/api/projects',restricted, projectsRouter)
-server.use('/api/tags',restricted, tagRouter)
-server.use('/api/tasks',restricted, taskRouter)
+server.use('/api/projects',projectsRouter)
+server.use('/api/tags',tagRouter)
+server.use('/api/tasks',taskRouter)
 server.use('/api/users', userRouter)
 server.use('/api/auth', authRouter)
 
