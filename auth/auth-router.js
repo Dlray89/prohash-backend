@@ -53,16 +53,34 @@ router.post('/login', (req,res) => {
 })
 
 
+
+
 function makeJWT(user) {
+
+
+    const jwtCheck = JWT({
+    secret: jwks.expressJwtSecret({
+          cache: true,
+          rateLimit: true,
+          jwksRequestsPerMinute: 5,
+          jwksUri: 'https://dapthedev.us.auth0.com/.well-known/jwks.json'
+    }),
+    audience: 'https://prohash-backend.herokuapp.com/',
+    issuer: 'https://dapthedev.us.auth0.com/',
+    algorithms: ['RS256']
+})
+
+
     const payload = {
         subject: user.id,
         username: user.username,
-        role: user.role
+        role: user.role,
+        
     }
     const secret = process.env.JWT_SECRET || 'this is a secret'
     const options = {
         expiresIn: '2h'
     }
-    return JWT.sign(payload, secret, options)
+    return JWT.sign(payload, secret, options, jwtCheck)
 }
 module.exports = router
